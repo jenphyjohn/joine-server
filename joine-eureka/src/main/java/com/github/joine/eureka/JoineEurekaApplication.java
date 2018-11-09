@@ -1,4 +1,4 @@
-package com.github.jenphyjohn.eureka;
+package com.github.joine.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

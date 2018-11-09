@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.jenphyjohn</groupId>
+	<groupId>com.github.joine</groupId>
 	<artifactId>joine-eureka</artifactId>
 	<version>${joine.version}</version>
 	<packaging>jar</packaging>
@@ -12,7 +12,7 @@
 	<description>服务注册中心</description>
 
 	<parent>
-		<groupId>com.github.jenphyjohn</groupId>
+		<groupId>com.github.joine</groupId>
 		<artifactId>joine-server</artifactId>
 		<version>${joine.version}</version>
 	</parent>
