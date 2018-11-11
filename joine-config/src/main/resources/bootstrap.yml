@@ -1,0 +1,60 @@
+server:
+  port: 9171
+
+spring:
+  application:
+    name: joine-config-server
+  profiles:
+    active: dev
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/jenphyjohn/joine-config.git
+          default-label: ${spring.profiles.active}
+
+# 关闭安全管理
+management:
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false
+---
+spring:
+  profiles: dev
+  rabbitmq:
+    host: 10.211.55.3
+    port: 5672
+    username: root
+    password: root
+eureka:
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 20
+  client:
+    serviceUrl:
+      defaultZone: http://root:root@localhost:9170/eureka
+    registry-fetch-interval-seconds: 10
+---
+spring:
+  profiles: prd
+  rabbitmq:
+    host: 10.211.55.3
+    port: 5682
+    username: root
+    password: root
+  cloud:
+    config:
+      retry:
+        initial-interval: 3000
+        multiplier: 1.5
+        max-interval: 20000
+        max-attempts: 6
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://root:root@eureka:9170/eureka
