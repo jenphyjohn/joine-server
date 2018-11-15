@@ -15,6 +15,7 @@
         <version>1.5.15.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -29,9 +30,19 @@
         <commons-io.version>2.6</commons-io.version>
         <jasypt.version>1.18</jasypt.version>
         <mybatis-plus.version>2.1.9</mybatis-plus.version>
+        <mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
+        <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         <swagger2.version>2.8.0</swagger2.version>
         <fastdfs.version>0.2.0</fastdfs.version>
         <ttl.version>2.2.0</ttl.version>
+        <sharding-jdbc-core-spring-boot-starter.version>2.0.1</sharding-jdbc-core-spring-boot-starter.version>
+        <velocity-engine-core.version>2.0</velocity-engine-core.version>
+        <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
+        <kaptcha.version>0.0.9</kaptcha.version>
+        <javadoc.version>3.0.0</javadoc.version>
+        <spring-boot-admin-server.version>1.5.7</spring-boot-admin-server.version>
+        <spring-boot-admin-server-ui.version>1.5.7</spring-boot-admin-server-ui.version>
+        <spring-boot-admin-server-ui-turbine.version>1.5.7</spring-boot-admin-server-ui-turbine.version>
 
         <!--Lombok-->
         <lombok.version>1.16.20</lombok.version>
@@ -43,6 +54,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--配置中心-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <!--Lombok-->
         <dependency>
@@ -56,16 +72,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--配置文件处理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--监控-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <modules>
         <module>joine-eureka</module>
         <module>joine-config</module>
         <module>joine-common</module>
-        <!--
         <module>joine-auth</module>
         <module>joine-gateway</module>
         <module>joine-modules</module>
+        <!--
         <module>joine-visual</module>
          -->
     </modules>
