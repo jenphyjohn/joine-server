@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.joine</groupId>
+    <artifactId>joine-mc-service</artifactId>
+    <version>${joine.version}</version>
+    <packaging>jar</packaging>
+
+    <name>joine-mc-service</name>
+    <description>消息中心</description>
+
+    <parent>
+        <groupId>com.github.joine</groupId>
+        <artifactId>joine-modules</artifactId>
+        <version>${joine.version}</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.joine</groupId>
+            <artifactId>joine-common</artifactId>
+            <version>${joine.version}</version>
+        </dependency>
+        <!--阿里大鱼-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.name}</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
