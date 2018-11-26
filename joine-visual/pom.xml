@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.joine</groupId>
+    <artifactId>joine-visual</artifactId>
+    <version>${joine.version}</version>
+    <packaging>pom</packaging>
+
+    <name>joine-visual</name>
+    <description>图形化管理模块</description>
+
+    <parent>
+        <artifactId>joine-server</artifactId>
+        <groupId>com.github.joine</groupId>
+        <version>${joine.version}</version>
+    </parent>
+
+    <modules>
+        <module>joine-monitor</module>
+        <module>joine-zipkin-elk</module>
+        <module>joine-zipkin-db</module>
+        <!--<module>joine-cache-cloud</module>-->
+    </modules>
+</project>
