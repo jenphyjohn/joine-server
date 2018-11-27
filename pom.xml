@@ -92,9 +92,7 @@
         <module>joine-auth</module>
         <module>joine-gateway</module>
         <module>joine-modules</module>
-        <!--
         <module>joine-visual</module>
-         -->
     </modules>
 
     <dependencyManagement>
