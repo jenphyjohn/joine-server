@@ -37,7 +37,7 @@
  ### 模块
 ``` lua
 joine
-├── joine-ui -- element-vue-admin实现[9528]
+├── joine-ui -- element-vue-admin实现[8000]
 ├── joine-auth -- 授权服务提供[9172]
 ├── joine-common -- 系统公共模块 
 ├── joine-config -- 配置中心[9171]

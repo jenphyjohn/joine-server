@@ -3,13 +3,13 @@
     <parent>
         <artifactId>joine-server</artifactId>
         <groupId>com.github.joine</groupId>
-        <version>${joine.version}</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.joine</groupId>
     <artifactId>joine-modules</artifactId>
-    <version>${joine.version}</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>joine-modules</name>

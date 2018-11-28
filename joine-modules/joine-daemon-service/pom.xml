@@ -5,7 +5,7 @@
 
     <groupId>com.github.joine</groupId>
     <artifactId>joine-daemon-service</artifactId>
-    <version>${joine.version}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>joine-daemon-service</name>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.github.joine</groupId>
         <artifactId>joine-modules</artifactId>
-        <version>${joine.version}</version>
+        <version>1.0.0</version>
     </parent>
 
     <properties>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.github.joine</groupId>
             <artifactId>joine-common</artifactId>
-            <version>${joine.version}</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.xjzrc.spring.boot</groupId>

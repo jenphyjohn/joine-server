@@ -5,7 +5,7 @@
 
 	<groupId>com.github.joine</groupId>
 	<artifactId>joine-eureka</artifactId>
-	<version>${joine.version}</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>joine-eureka</name>
@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>com.github.joine</groupId>
 		<artifactId>joine-server</artifactId>
-		<version>${joine.version}</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<dependencies>

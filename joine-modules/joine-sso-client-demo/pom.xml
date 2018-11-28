@@ -5,7 +5,7 @@
 
     <groupId>com.github.joine</groupId>
     <artifactId>joine-sso-client-demo</artifactId>
-    <version>${joine.version}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>joine-sso-client-demo</name>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.github.joine</groupId>
         <artifactId>joine-modules</artifactId>
-        <version>${joine.version}</version>
+        <version>1.0.0</version>
     </parent>
 
     <dependencies>
