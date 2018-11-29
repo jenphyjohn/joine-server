@@ -138,4 +138,8 @@ public interface SecurityConstants {
      */
     String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where client_id = ?";
 
+    /**
+     * 版本定义
+     */
+    String VERSION = "version";
 }
