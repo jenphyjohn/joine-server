@@ -267,11 +267,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //获取当前部门的子部门
         SysDeptRelation deptRelation = new SysDeptRelation();
         deptRelation.setAncestor(deptId);
-        List<SysDeptRelation> deptRelationList = sysDeptRelationService.selectList(new EntityWrapper<>(deptRelation));
         List<Integer> deptIds = new ArrayList<>();
-        for (SysDeptRelation sysDeptRelation : deptRelationList) {
+        List<SysDeptRelation> deptRelationList = sysDeptRelationService.selectList(new EntityWrapper<>(deptRelation));
+        deptRelationList.forEach(sysDeptRelation -> {
             deptIds.add(sysDeptRelation.getDescendant());
-        }
+        });
         return deptIds;
     }
 
