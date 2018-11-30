@@ -1,9 +1,12 @@
 package com.github.joine.gateway.component.filter;
 
 import com.github.joine.common.constant.SecurityConstants;
+import com.github.joine.gateway.util.RibbonVersionHolder;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.xiaoleilu.hutool.collection.CollectionUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +21,9 @@ import static org.springframework.cloud.netflix.zuul.filters.support.FilterConst
  */
 @Component
 public class AccessFilter extends ZuulFilter {
+
+    @Value("${zuul.ribbon.metadata.enabled:false}")
+    private boolean canary;
 
     @Override
     public String filterType() {
@@ -37,12 +43,16 @@ public class AccessFilter extends ZuulFilter {
     @Override
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
+        String version = ctx.getRequest().getHeader(SecurityConstants.VERSION);
+        if (canary && StrUtil.isNotBlank(version)) {
+            RibbonVersionHolder.setContext(version);
+        }
+
         ctx.set("startTime", System.currentTimeMillis());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            RequestContext requestContext = RequestContext.getCurrentContext();
-            requestContext.addZuulRequestHeader(SecurityConstants.USER_HEADER, authentication.getName());
-            requestContext.addZuulRequestHeader(SecurityConstants.ROLE_HEADER,  CollectionUtil.join(authentication.getAuthorities(),","));
+            ctx.addZuulRequestHeader(SecurityConstants.USER_HEADER, authentication.getName());
+            ctx.addZuulRequestHeader(SecurityConstants.ROLE_HEADER,  CollectionUtil.join(authentication.getAuthorities(),","));
         }
         return null;
     }

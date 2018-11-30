@@ -1,11 +1,10 @@
 package com.github.joine.gateway.service.impl;
 
-import com.baomidou.mybatisplus.toolkit.StringUtils;
+import com.github.joine.common.constant.SecurityConstants;
 import com.github.joine.common.vo.MenuVO;
 import com.github.joine.gateway.feign.MenuService;
 import com.github.joine.gateway.service.PermissionService;
 import com.xiaoleilu.hutool.collection.CollUtil;
-import com.xiaoleilu.hutool.collection.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author JenphyJohn
@@ -39,32 +39,29 @@ public class PermissionServiceImpl implements PermissionService {
 //        }
         Object principal = authentication.getPrincipal();
         List<SimpleGrantedAuthority> grantedAuthorityList = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
-        boolean hasPermission = false;
+        AtomicBoolean hasPermission = new AtomicBoolean(false);
 
         if (principal != null) {
-            if (CollectionUtil.isEmpty(grantedAuthorityList)) {
+            if (CollUtil.isEmpty(grantedAuthorityList)) {
                 log.warn("角色列表为空：{}", authentication.getPrincipal());
-                return hasPermission;
+                return hasPermission.get();
             }
 
             Set<MenuVO> urls = new HashSet<>();
-            for (SimpleGrantedAuthority authority : grantedAuthorityList) {
-                if (!StrUtil.equals(authority.getAuthority(), "ROLE_USER")) {
-                    Set<MenuVO> menuVOSet = menuService.findMenuByRole(authority.getAuthority());
-                    if (CollUtil.isNotEmpty(menuVOSet)) {
+            grantedAuthorityList.stream()
+                    .filter(authority -> !StrUtil.equals(authority.getAuthority(), SecurityConstants.BASE_ROLE))
+                    .forEach(authority -> {
+                        Set<MenuVO> menuVOSet = menuService.findMenuByRole(authority.getAuthority());
                         CollUtil.addAll(urls, menuVOSet);
-                    }
-                }
-            }
+                    });
 
-            for (MenuVO menu : urls) {
-                if (StringUtils.isNotEmpty(menu.getUrl()) && antPathMatcher.match(menu.getUrl(), request.getRequestURI())
-                        && request.getMethod().equalsIgnoreCase(menu.getMethod())) {
-                    hasPermission = true;
-                    break;
-                }
-            }
+            urls.stream()
+                    .filter(menuVO -> StrUtil.isNotEmpty(menuVO.getUrl())
+                            && antPathMatcher.match(menuVO.getUrl(), request.getRequestURI())
+                            && request.getMethod().equalsIgnoreCase(menuVO.getMethod()))
+                    .findFirst().ifPresent(menuVO -> hasPermission.set(true));
         }
-        return hasPermission;
+
+        return hasPermission.get();
     }
 }

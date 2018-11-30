@@ -8,12 +8,13 @@ import com.github.joine.admin.service.SysMenuService;
 import com.github.joine.common.constant.CommonConstant;
 import com.github.joine.common.util.R;
 import com.github.joine.common.vo.MenuVO;
+import com.github.joine.common.vo.UserVO;
 import com.github.joine.common.web.BaseController;
-import com.xiaoleilu.hutool.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author JenphyJohn
@@ -42,17 +43,16 @@ public class MenuController extends BaseController {
      * @return 当前用户的树形菜单
      */
     @GetMapping(value = "/userMenu")
-    public List<MenuTree> userMenu() {
+    public List<MenuTree> userMenu(UserVO userVO) {
         // 获取符合条件得菜单
         Set<MenuVO> all = new HashSet<>();
-        getRole().forEach(roleName -> all.addAll(sysMenuService.findMenuByRoleName(roleName)));
-        List<MenuTree> menuTreeList = new ArrayList<>();
-        all.forEach(menuVo -> {
-            if (CommonConstant.MENU.equals(menuVo.getType())) {
-                menuTreeList.add(new MenuTree(menuVo));
-            }
-        });
-        CollUtil.sort(menuTreeList, Comparator.comparingInt(MenuTree::getSort));
+        userVO.getRoleList().forEach(role -> all.addAll(sysMenuService.findMenuByRoleName(role.getRoleCode())));
+
+        List<MenuTree> menuTreeList = all.stream().filter(menuVO -> CommonConstant.MENU.equals(menuVO.getType()))
+                .map(MenuTree::new)
+                .sorted(Comparator.comparing(MenuTree::getSort))
+                .collect(Collectors.toList());
+
         return TreeUtil.bulid(menuTreeList, -1);
     }
 

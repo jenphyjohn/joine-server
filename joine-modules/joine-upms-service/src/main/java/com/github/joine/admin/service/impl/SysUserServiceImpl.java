@@ -26,8 +26,10 @@ import com.github.joine.common.vo.MenuVO;
 import com.github.joine.common.vo.SysRole;
 import com.github.joine.common.vo.UserVO;
 import com.xiaoleilu.hutool.collection.CollectionUtil;
+import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -42,6 +44,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author JenphyJohn
@@ -49,56 +52,43 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
-    @Autowired
-    private SysMenuService sysMenuService;
-    @Autowired
-    private RedisTemplate redisTemplate;
-    @Autowired
-    private SysUserMapper sysUserMapper;
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
-    @Autowired
-    private SysDeptRelationService sysDeptRelationService;
+    private final SysMenuService sysMenuService;
+    private final RedisTemplate redisTemplate;
+    private final SysUserMapper sysUserMapper;
+    private final RabbitTemplate rabbitTemplate;
+    private final SysUserRoleService sysUserRoleService;
+    private final SysDeptRelationService sysDeptRelationService;
 
     @Override
     public UserInfo findUserInfo(UserVO userVo) {
         SysUser condition = new SysUser();
         condition.setUsername(userVo.getUsername());
         SysUser sysUser = this.selectOne(new EntityWrapper<>(condition));
-
         UserInfo userInfo = new UserInfo();
         userInfo.setSysUser(sysUser);
+
         //设置角色列表
-        List<SysRole> roleList = userVo.getRoleList();
-        List<String> roleNames = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(roleList)) {
-            for (SysRole sysRole : roleList) {
-                if (!StrUtil.equals(SecurityConstants.BASE_ROLE, sysRole.getRoleName())) {
-                    roleNames.add(sysRole.getRoleName());
-                }
-            }
-        }
-        String[] roles = roleNames.toArray(new String[roleNames.size()]);
+        List<String> roleCodes = userVo.getRoleList().stream()
+                .filter(sysRole -> !StrUtil.equals(SecurityConstants.BASE_ROLE, sysRole.getRoleCode()))
+                .map(SysRole::getRoleCode)
+                .collect(Collectors.toList());
+        String[] roles = ArrayUtil.toArray(roleCodes, String.class);
         userInfo.setRoles(roles);
 
         //设置权限列表（menu.permission）
-        Set<MenuVO> menuVoSet = new HashSet<>();
-        for (String role : roles) {
-            List<MenuVO> menuVos = sysMenuService.findMenuByRoleName(role);
-            menuVoSet.addAll(menuVos);
-        }
         Set<String> permissions = new HashSet<>();
-        for (MenuVO menuVo : menuVoSet) {
-            if (StringUtils.isNotEmpty(menuVo.getPermission())) {
-                String permission = menuVo.getPermission();
-                permissions.add(permission);
-            }
-        }
-        userInfo.setPermissions(permissions.toArray(new String[permissions.size()]));
+        Arrays.stream(roles).forEach(role -> {
+            List<MenuVO> menuVos = sysMenuService.findMenuByRoleName(role);
+            List<String> permissionList = menuVos.stream()
+                    .filter(menuVO -> StrUtil.isNotEmpty(menuVO.getPermission()))
+                    .map(MenuVO::getPermission)
+                    .collect(Collectors.toList());
+            permissions.addAll(permissionList);
+        });
+        userInfo.setPermissions(ArrayUtil.toArray(permissions, String.class));
         return userInfo;
     }
 
