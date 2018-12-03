@@ -24,7 +24,7 @@
       </form>
     </div>
     <footer>
-      <p>support by: JenphyJohn</p>
+      <p>supported by: JenphyJohn</p>
       <p>email: <a href="mailto:zhuangzf1989@126.com">zhuangzf1989@126.com</a>.</p>
     </footer>
   </body>

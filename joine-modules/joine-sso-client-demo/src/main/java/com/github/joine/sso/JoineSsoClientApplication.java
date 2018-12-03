@@ -11,10 +11,10 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
  */
 @EnableOAuth2Sso
 @SpringBootApplication
-public class JoineSsoClientDemoApplication {
+public class JoineSsoClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JoineSsoClientDemoApplication.class, args);
+        SpringApplication.run(JoineSsoClientApplication.class, args);
     }
 
 }
