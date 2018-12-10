@@ -25,7 +25,7 @@ public class JoineResourcesGenerator {
 
 
     public static void main(String[] args) {
-        String outputDir = "/Users/jenphyjohn/work/temp";
+        String outputDir = "/Users/jenphyjohn/Storage/joine-generator";
         final String viewOutputDir = outputDir + "/view/";
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置
